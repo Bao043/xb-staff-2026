@@ -201,6 +201,12 @@
     .wn-ver .d { font-size: 12px; color: var(--muted); margin-left: 6px; }
     .wn-ver ul { margin: 6px 0 0; padding-left: 20px; font-size: 14px; line-height: 1.6; color: #334155; }
     .verfoot { text-align: center; font-size: 12px; color: #8c99a8; margin: 22px 0 8px; }
+    .maintbar { margin: 0 0 12px; border-radius: 14px; padding: 11px 14px; font-size: 14px; display: flex; gap: 10px; align-items: center; }
+    .maintbar.soon { background: #fff7e0; border: 1px solid #f5d77a; color: #5c4300; }
+    .maintbar.on { background: #fdeced; border: 1px solid #f3c2c4; color: var(--red2); }
+    .maintbar .grow { flex: 1; }
+    .mcard { background: #fffbef; border: 1px solid #f5d77a; border-radius: 16px; padding: 16px; margin-bottom: 8px; }
+    .mcard h2 { margin-bottom: 2px; }
     .verwarn { margin: 0 0 12px; background: #fdeced; border: 1px solid #f3c2c4; color: var(--red2); border-radius: 12px; padding: 10px 12px; font-size: 13px; }
     #toast { position: fixed; left: 50%; bottom: calc(90px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--char); color: #fff; padding: 10px 18px; border-radius: 999px; font-size: 14px; z-index: 60; }
     [hidden] { display: none !important; }
@@ -330,6 +336,7 @@
 
       <div class="main">
         <div class="verwarn" id="verWarn" hidden></div>
+        <div class="maintbar" id="maintBar" hidden></div>
 
         <!-- 總覽 -->
         <div id="p_home" hidden>
@@ -349,6 +356,7 @@
                   <button id="qEvent"><span>📅</span>新增行程</button>
                   <button id="qLink"><span>🔗</span>新增常用連結</button>
                   <button id="qMember"><span>👤</span>新增成員</button>
+                  <button id="qMaint"><span>🛠️</span>維護公告</button>
                 </div>
               </div>
             </div>
@@ -547,7 +555,23 @@
 
         <!-- 設定 -->
         <div class="card" id="p_settings" hidden>
-          <h2>系統設定</h2>
+          <div class="mcard" id="maintCard">
+            <h2>🛠️ 維護公告</h2>
+            <p class="muted">要更新系統時用：預約時段會先在前台顯示預告和倒數，時間到顯示「系統維護中」，結束時間一到自動恢復。登入後台的幹部也會跳出提醒。</p>
+            <div class="seg2" id="maintMode">
+              <button data-m="關閉">關閉</button><button data-m="預約時段">預約時段</button><button data-m="立即維護">立即維護</button>
+            </div>
+            <div class="two" id="maintTimes">
+              <div id="maintStartBox"><label for="maintStart">開始時間</label><input type="datetime-local" id="maintStart"></div>
+              <div><label for="maintEnd">預計結束時間</label><input type="datetime-local" id="maintEnd"></div>
+            </div>
+            <div class="hint" id="maintHint"></div>
+            <label for="maintNote">維護畫面的說明（可留空）</label>
+            <textarea id="maintNote" maxlength="200" style="min-height:70px" placeholder="例如：系統更新中，請假表單恢復後再填，謝謝。"></textarea>
+            <div class="btnrow"><button class="btn amber" id="saveMaint">儲存維護公告</button></div>
+            <div class="msg" id="maintMsg"></div>
+          </div>
+          <h2 style="margin-top:22px">系統設定</h2>
           <p class="muted">改完按最下面的「儲存設定」。不確定的項目不用動。</p>
           <div id="settings"></div>
           <button class="primary" id="saveSettings">儲存設定</button>
@@ -570,8 +594,16 @@
       <button class="primary" id="wnClose">我知道了</button>
     </div>
   </div>
+  <div class="wn" id="maintPop" hidden>
+    <div class="wn-card">
+      <h2>🛠️ 系統維護提醒</h2>
+      <p id="maintPopText" style="white-space:pre-line;line-height:1.7"></p>
+      <button class="primary" id="maintPopClose">我知道了</button>
+    </div>
+  </div>
   <div id="loading" hidden>處理中…</div>
   <div id="toast" hidden></div>
+  <script src="config.js"></script>
   <script>
     /* ===== 共用畫面：請假紀錄、行事曆（前台、後台內容相同，由 build 自動同步） ===== */
     var Views = (function () {
@@ -757,16 +789,53 @@
         ]);
       }
 
-      return { renderLeave: renderLeave, renderCalendar: renderCalendar, upcoming: upcoming, eventItem: eventItem, color: color, dayLabel: dayLabel, rangeLabel: rangeLabel, ymd: ymd, parse: parse, WEEK: WEEK, TYPES: Object.keys(TYPE_COLOR) };
+      /** 維護狀態：off 正常、soon 預告中、on 維護中 */
+      function maintState(m, now) {
+        now = now || Date.now();
+        if (!m || m.mode === '關閉') return 'off';
+        if (m.mode === '立即維護') return m.end && now >= m.end ? 'off' : 'on';
+        if (!m.start || !m.end || now >= m.end) return 'off';
+        return now < m.start ? 'soon' : 'on';
+      }
+      function timeLabel(t) { var d = new Date(t); return (d.getMonth() + 1) + '/' + d.getDate() + '（' + WEEK[d.getDay()] + '）' + pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+      function clockLabel(t) { var d = new Date(t); return pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+      /** 剩下多久：「2 天 3 小時」「1 小時 5 分」「12 分鐘」 */
+      function untilLabel(t, now) {
+        var m = Math.max(0, Math.ceil((t - (now || Date.now())) / 60000));
+        if (m >= 1440) return Math.floor(m / 1440) + ' 天 ' + Math.floor(m % 1440 / 60) + ' 小時';
+        if (m >= 60) return Math.floor(m / 60) + ' 小時 ' + (m % 60) + ' 分';
+        return m + ' 分鐘';
+      }
+      /** 維護時段文字：同一天只寫一次日期 */
+      function maintRange(m) {
+        if (!m.end) return '';
+        var s = new Date(m.start), e = new Date(m.end);
+        return s.toDateString() === e.toDateString() ? timeLabel(m.start) + ' – ' + clockLabel(m.end) : timeLabel(m.start) + ' – ' + timeLabel(m.end);
+      }
+
+      return { maintState: maintState, timeLabel: timeLabel, clockLabel: clockLabel, untilLabel: untilLabel, maintRange: maintRange, renderLeave: renderLeave, renderCalendar: renderCalendar, upcoming: upcoming, eventItem: eventItem, color: color, dayLabel: dayLabel, rangeLabel: rangeLabel, ymd: ymd, parse: parse, WEEK: WEEK, TYPES: Object.keys(TYPE_COLOR) };
     })();
-    /* ===== 上架設定：只要改這裡 ===== */
-    var API_URL = 'https://script.google.com/macros/s/AKfycbwSmm9VdJyGyhS6qZSZ3b8xLHjBY_HXPiYw936Tvkl-vLrV3VOSqnncVJfy1ErzFWQMpg/exec';   // ← 貼上「入口網站-後台」Apps Script 的部署網址（結尾是 /exec）
-    var APP_VERSION = '2.0.4';
-    var MIN_API_VERSION = '2.0.0';         // 這版網頁需要的 Apps Script 版本
+    /* ===== 上架設定 =====
+     * API 網址放在同一個倉庫的 config.js（只要建一次，之後更新只換 index.html，不會被蓋掉）：
+     *   window.PORTAL_API_URL = 'https://script.google.com/macros/s/xxxx/exec';
+     * 沒有 config.js 時才用下面這行 */
+    var API_URL = window.PORTAL_API_URL || 'PASTE_ADMIN_API_URL';
+    var APP_VERSION = '2.1.0';
+    var MIN_API_VERSION = '2.1.0';         // 這版網頁需要的 Apps Script 版本
     /* ================================= */
 
     /* 更新紀錄：最新的放最上面。登入後第一次看到新版本會跳出（含上次看過之後的所有版本） */
     var CHANGELOG = [
+      { v: '2.1.0', date: '2026-11-09', items: [
+        '新增「維護公告」（⚙️ 設定最上面，總覽也有捷徑）：可以預約維護時段或立即維護',
+        '預約時段：開始前前台首頁顯示預告和倒數；時間到前台變成「系統維護中」並顯示預計恢復時間；結束時間一到自動恢復',
+        '維護期間或預告中，登入後台的幹部會跳出提醒「這段時間請先不要使用後台」，每一頁上方也會顯示',
+        '更新：GitHub 兩個 index.html、Apps Script 前台與後台（Code、Data 都要換），部署新版本',
+      ] },
+      { v: '2.0.5', date: '2026-11-09', items: [
+        '前台加到手機主畫面時的名稱，從「XINBAN 入口」改成「新版資訊整合平台」',
+        '只要更新 GitHub 前台倉庫的 index.html（後台倉庫換了只差版本號）；Apps Script 不用改',
+      ] },
       { v: '2.0.4', date: '2026-11-09', items: [
         '前台響應式再加強：小手機（iPhone SE）日期和下一個行程改上下排；電腦和橫放平板改成左右兩欄',
         '已在手機、平板直放／橫放、筆電、大螢幕 5 種寬度測過，畫面都不會被切到或需要左右滑',
@@ -886,7 +955,7 @@
         });
       }
       if (!/^(https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec|http:\/\/(127\.0\.0\.1|localhost)(:\d+)?\/\S*)$/.test(API_URL)) {
-        return Promise.reject(new Error('網站還沒設定 API_URL（請通知管理員）'));
+        return Promise.reject(new Error('網站還沒設定 API_URL：GitHub 倉庫裡要有 config.js（請通知管理員）'));
       }
       return fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ fn: fn, args: args }) })
         .then(function (res) {
@@ -1044,8 +1113,10 @@
         renderMembers();
         renderSettings();
         renderBadges();
+        renderMaintForm();
         show('vApp');
         tab(currentTab);
+        renderMaintBar();
         // 版本：網頁比 Apps Script 新 → 提醒重新部署；登入後第一次看到新版本 → 更新內容
         $('ver').textContent = 'v' + APP_VERSION + (r.apiVersion ? '・API v' + r.apiVersion : '');
         var vw = $('verWarn');
@@ -1612,7 +1683,7 @@
         g[2].forEach(function (k) { if (!byKey[k]) return; used[k] = true; settingInput(byKey[k][0], byKey[k][1]).forEach(function (n) { if (n) sec.appendChild(n); }); });
         box.appendChild(sec);
       });
-      var rest = D.settings.filter(function (s) { return !used[s.key]; });
+      var rest = D.settings.filter(function (s) { return !used[s.key] && !/^維護/.test(s.key); });
       if (rest.length) {
         var fold = el('details', { cls: 'fold' }, [el('summary', { text: '進階（假別、時數等，通常不用改）' })]);
         rest.forEach(function (s) { settingInput(s, D.settings.indexOf(s)).forEach(function (n) { if (n) fold.appendChild(n); }); });
@@ -1839,6 +1910,77 @@
       run('apiDeleteEvent', [token, id]).then(function (list) { D.events = list; renderCal(); toast('已刪除'); })
         .catch(function (e) { if (e.message !== 'NEED_LOGIN') toast(e.message); });
     }
+
+    /* ---------- 維護公告 ---------- */
+    var maintEdit = '關閉', maintTimer = null;
+    var MAINT_SEEN = 'portal_admin_maint_seen';
+    function dtLocal(t) {
+      if (!t) return '';
+      var d = new Date(t);
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0') + 'T' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+    }
+    function fromLocal(v) { if (!v) return 0; var t = new Date(v).getTime(); return isNaN(t) ? 0 : t; }
+    function setMaintMode(m) {
+      maintEdit = m;
+      Array.prototype.forEach.call($('maintMode').children, function (b) { b.classList.toggle('on', b.getAttribute('data-m') === m); });
+      $('maintTimes').hidden = m === '關閉';
+      $('maintStartBox').hidden = m !== '預約時段';
+      $('maintHint').textContent = {
+        '關閉': '目前不會顯示任何維護訊息。',
+        '預約時段': '開始前：前台首頁顯示預告和倒數。開始到結束：前台顯示「系統維護中」。結束後自動恢復，不用再回來關。',
+        '立即維護': '按下儲存後前台馬上顯示「系統維護中」。有填結束時間就到時自動恢復；沒填就要回來改成「關閉」。',
+      }[m];
+    }
+    function renderMaintForm() {
+      var m = D.maintenance || { mode: '關閉' };
+      setMaintMode(m.mode);
+      $('maintStart').value = dtLocal(m.start);
+      $('maintEnd').value = dtLocal(m.end);
+      $('maintNote').value = m.note || '';
+    }
+    Array.prototype.forEach.call($('maintMode').children, function (b) {
+      b.addEventListener('click', function () { setMaintMode(b.getAttribute('data-m')); });
+    });
+    $('saveMaint').addEventListener('click', function () {
+      var input = { mode: maintEdit, start: fromLocal($('maintStart').value), end: fromLocal($('maintEnd').value), note: $('maintNote').value };
+      run('apiSaveMaintenance', [token, input]).then(function (r) {
+        D.maintenance = r.maintenance;
+        D.settings = r.settings;
+        store(MAINT_SEEN, maintKey(r.maintenance));   // 自己設的就不用再跳提醒
+        renderMaintForm();
+        renderMaintBar();
+        var st = Views.maintState(r.maintenance);
+        okTo($('maintMsg'), st === 'off' ? '✅ 已關閉維護公告' : st === 'soon' ? '✅ 已預約：' + Views.maintRange(r.maintenance) + '，前台約 1 分鐘內出現預告' : '✅ 前台約 1 分鐘內顯示「系統維護中」');
+      }).catch(failTo($('maintMsg')));
+    });
+    function maintKey(m) { return m ? [m.mode, m.start, m.end].join('|') : ''; }
+    function maintText(m, st) {
+      if (st === 'soon') return '系統預計在 ' + Views.maintRange(m) + ' 更新（還有 ' + Views.untilLabel(m.start) + '）。';
+      return '系統維護中' + (m.end ? '，預計 ' + Views.timeLabel(m.end) + ' 恢復（還有 ' + Views.untilLabel(m.end) + '）' : '') + '。';
+    }
+    /** 每一頁最上面的維護提示；維護時段第一次打開後台會跳提醒 */
+    function renderMaintBar() {
+      var m = D && D.maintenance;
+      var st = Views.maintState(m);
+      var bar = $('maintBar');
+      bar.hidden = st === 'off';
+      bar.className = 'maintbar ' + st;
+      bar.innerHTML = '';
+      if (st !== 'off') {
+        bar.appendChild(el('span', { text: '🛠️' }));
+        bar.appendChild(el('span', { cls: 'grow', text: maintText(m, st) + (st === 'on' ? '前台目前顯示維護畫面。' : '前台已顯示預告。') }));
+        bar.appendChild(btn('設定', function () { tab('settings'); }));
+        var seen = store(MAINT_SEEN);
+        if (seen !== maintKey(m)) {
+          $('maintPopText').textContent = maintText(m, st) + '\n\n這段時間請先不要使用後台（列印假單、修改名冊、新增行程等），以免資料沒有存到。' + (m.note ? '\n\n說明：' + m.note : '');
+          $('maintPop').hidden = false;
+        }
+      }
+      clearTimeout(maintTimer);
+      if (st !== 'off') maintTimer = setTimeout(renderMaintBar, 30000);
+    }
+    $('maintPopClose').addEventListener('click', function () { $('maintPop').hidden = true; store(MAINT_SEEN, maintKey(D.maintenance)); });
+    $('qMaint').addEventListener('click', function () { tab('settings'); $('maintCard').scrollIntoView(); });
 
     /* ---------- 啟動 ---------- */
     $('ver').textContent = 'v' + APP_VERSION;
