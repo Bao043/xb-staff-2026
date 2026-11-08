@@ -760,13 +760,18 @@
       return { renderLeave: renderLeave, renderCalendar: renderCalendar, upcoming: upcoming, eventItem: eventItem, color: color, dayLabel: dayLabel, rangeLabel: rangeLabel, ymd: ymd, parse: parse, WEEK: WEEK, TYPES: Object.keys(TYPE_COLOR) };
     })();
     /* ===== 上架設定：只要改這裡 ===== */
-    var API_URL = 'https://script.google.com/macros/s/AKfycbwSmm9VdJyGyhS6qZSZ3b8xLHjBY_HXPiYw936Tvkl-vLrV3VOSqnncVJfy1ErzFWQMpg/exec';   // ← 貼上「入口網站-後台」Apps Script 的部署網址（結尾是 /exec）
-    var APP_VERSION = '2.0.3';
+    var API_URL = 'PASTE_ADMIN_API_URL';   // ← 貼上「入口網站-後台」Apps Script 的部署網址（結尾是 /exec）
+    var APP_VERSION = '2.0.4';
     var MIN_API_VERSION = '2.0.0';         // 這版網頁需要的 Apps Script 版本
     /* ================================= */
 
     /* 更新紀錄：最新的放最上面。登入後第一次看到新版本會跳出（含上次看過之後的所有版本） */
     var CHANGELOG = [
+      { v: '2.0.4', date: '2026-11-09', items: [
+        '前台響應式再加強：小手機（iPhone SE）日期和下一個行程改上下排；電腦和橫放平板改成左右兩欄',
+        '已在手機、平板直放／橫放、筆電、大螢幕 5 種寬度測過，畫面都不會被切到或需要左右滑',
+        '只要更新 GitHub 兩個 index.html；Apps Script 不用改',
+      ] },
       { v: '2.0.3', date: '2026-11-08', items: [
         '後台圖示改成「假單板夾」：深灰底配黃色夾子，跟後台頁首同色系',
         '只要更新 GitHub 後台倉庫的 index.html 和 admin-icon.png；Apps Script 不用改',
