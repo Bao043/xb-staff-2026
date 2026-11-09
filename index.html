@@ -589,6 +589,7 @@
               <button class="btn" id="checkLeave">檢查設定</button>
               <button class="btn" id="listPh">列出範本可用欄位</button>
               <button class="btn" id="sampleTpl">建立範例範本</button>
+              <button class="btn" id="summaryBtn">📊 更新請假總表</button>
               <button class="btn" id="shareLeave">🔗 假單資料夾共用給幹部</button>
             </div>
             <ul class="plain" id="leaveInfo"></ul>
@@ -873,12 +874,19 @@
      *   window.PORTAL_API_URL = 'https://script.google.com/macros/s/xxxx/exec';
      * 沒有 config.js 時才用下面這行 */
     var API_URL = window.PORTAL_API_URL || 'PASTE_ADMIN_API_URL';
-    var APP_VERSION = '2.4.0';
-    var MIN_API_VERSION = '2.4.0';         // 這版網頁需要的 Apps Script 版本
+    var APP_VERSION = '2.5.0';
+    var MIN_API_VERSION = '2.5.0';         // 這版網頁需要的 Apps Script 版本
     /* ================================= */
 
     /* 更新紀錄：最新的放最上面。登入後第一次看到新版本會跳出（含上次看過之後的所有版本） */
     var CHANGELOG = [
+      { v: '2.5.0', date: '2026-11-09', items: [
+        '新增「請假總表（依年月排序）」試算表：同一年月放一起，再依類別、職務高低、填表時間排好；換月份會換底色',
+        '總表放在「假單存檔」資料夾，幹部打開資料夾就看得到；不含信箱，表單回應原始資料不用共用、也不會被動到',
+        '每次產生假單、消假、放行代填都會自動更新；假單工具也有「📊 更新請假總表」按鈕',
+        '共用失敗時會顯示 Google 回的原因',
+        '更新：GitHub 後台 index.html＋Apps Script 前台（Code）與後台（Code、Leave），部署新版本',
+      ] },
       { v: '2.4.0', date: '2026-11-09', items: [
         '列印的假單版面跟上傳的範本一模一樣：合併儲存格、直線框線、欄寬都保留（之前會變成只有橫線、「單位」格被拆開）',
         '每一張假單的備註編號都從 1. 開始',
@@ -1790,6 +1798,7 @@
           (r.locked ? '\n🔒 已鎖定 ' + r.locked + ' 張的核章人' : '') + warn);
         dlBtn('🖨️ 下載 PDF 列印', r.pdfId, 'pdf', 'main');
         dlBtn('📝 下載 Word 檔（可修改）', r.docId, 'docx');
+        addLink('📊 請假總表（依年月排序）', r.summaryUrl);
         addLink('☁️ 在雲端開啟 PDF', r.pdfUrl);
         addLink('✏️ 可編輯的 Google 文件', r.docUrl);
         addLink('📁 開啟月份資料夾', r.folderUrl);
@@ -1824,13 +1833,19 @@
       items.forEach(function (x) { ul.appendChild(el('li', { text: x })); });
     }
     function infoError(e) { if (e.message !== 'NEED_LOGIN') infoList(['❌ ' + e.message]); }
+    $('summaryBtn').addEventListener('click', function () {
+      run('apiUpdateLeaveSummary', [token]).then(function (r) {
+        infoList(['✅ 請假總表已更新，共 ' + r.count + ' 筆（同一年月放一起，放在「假單存檔」資料夾，幹部看得到）。']);
+        $('leaveInfo').appendChild(el('li', {}, [el('a', { href: r.url, target: '_blank', rel: 'noopener', text: '📊 打開請假總表' })]));
+      }).catch(infoError);
+    });
     $('shareLeave').addEventListener('click', function () {
       run('apiShareLeaveFolder', [token]).then(function (r) {
         infoList([
           '✅ 「假單存檔」資料夾已共用給名冊上啟用、有填 Gmail 的幹部（他們用那個 Gmail 登入 Google 就打得開 PDF）。',
           r.added.length ? '新增：' + r.added.join('、') : '沒有需要新增的人',
           r.removed.length ? '移除（已不是幹部）：' + r.removed.join('、') : '',
-          r.failed.length ? '⚠️ 共用失敗（請確認是 Google 帳號）：' + r.failed.join('、') : '',
+          r.failed.length ? '⚠️ 共用失敗（括號裡是 Google 回的原因）：' + r.failed.join('、') : '',
         ].filter(Boolean));
       }).catch(infoError);
     });
