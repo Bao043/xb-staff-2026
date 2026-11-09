@@ -9,50 +9,60 @@
   <link rel="icon" href="admin-icon.png">
   <link rel="apple-touch-icon" href="admin-icon.png">
   <meta name="apple-mobile-web-app-title" content="XINBAN 後台">
-  <meta name="theme-color" content="#17202b">
+  <meta name="theme-color" content="#F1ECE2">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chiron+GoRound+TC:wght@400;700&display=swap" media="print" onload="this.media='all'">
   <style>
-    :root { --navy: #012643; --navy2: #0a3a66; --red: #d2141c; --red2: #a80f16; --amber: #f2b400; --char: #17202b; --char2: #232f3e;
-      --paper: #eef1f5; --wash: #e6ebf2; --ink: #102033; --muted: #5a6b80; --line: #dde3eb; --ok: #15803d; }
+    /* D4 圓體公文風：米色紙＋紅印章＋框框分區 */
+    :root { --navy: #1F3A5F; --navy2: #2B4E7A; --red: #B3261E; --red2: #8F1D17; --amber: #C98A12; --char: #1F3A5F; --char2: #2B4E7A;
+      --paper: #F1ECE2; --card: #FFFDF8; --wash: #F4EEE2; --ink: #22201C; --muted: #665F53; --line: #DDD4C3; --line2: #CFC4B0; --pink: #F6E3E0; --ok: #2F7D4F;
+      --font: "Chiron GoRound TC", -apple-system, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif; --shadow: 0 2px 10px rgba(60,45,20,.07); }
     * { box-sizing: border-box; }
     html, body { overflow-x: hidden; }
-    body { margin: 0; font-family: -apple-system, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif; background: var(--paper); color: var(--ink); -webkit-font-smoothing: antialiased; line-height: 1.5; }
+    body { margin: 0; font-family: var(--font); background: var(--paper); color: var(--ink); -webkit-font-smoothing: antialiased; line-height: 1.5; }
     button, input, select, textarea { font: inherit; }
-    :focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
+    :focus-visible { outline: 3px solid #E0A13A; outline-offset: 2px; }
 
-    /* 頁首：深灰底＋琥珀色，和前台的深藍紅一眼分得出來 */
-    .hdr { position: sticky; top: 0; z-index: 20; background: var(--char); color: #fff; border-bottom: 3px solid var(--amber); }
+    /* 頁首：米色報頭＋雙線 */
+    .hdr { position: sticky; top: 0; z-index: 20; background: rgba(241,236,226,.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: var(--ink); border-bottom: 4px double var(--ink); }
     .hdr-in { display: flex; align-items: center; gap: 12px; max-width: 1180px; margin: 0 auto; padding: calc(10px + env(safe-area-inset-top)) 16px 10px; }
     .logo { width: 38px; height: 38px; border-radius: 10px; flex: 0 0 auto; }
+    .hdr .brand { font-size: 16px; letter-spacing: .04em; }
     .ttl { flex: 1; min-width: 0; }
     .brand { font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .tagline { font-size: 12px; color: var(--amber); }
-    .hbtn { background: transparent; border: 1px solid rgba(255,255,255,.28); color: #fff; border-radius: 10px; padding: 7px 12px; font-size: 14px; }
-    .hbtn.on { background: var(--amber); color: var(--char); border-color: var(--amber); }
+    .tagline { font-size: 12px; color: var(--red); font-weight: 700; letter-spacing: .2em; }
+    .hbtn { background: var(--card); border: 1px solid var(--line); color: var(--ink); border-radius: 12px; padding: 0 12px; min-height: 44px; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
+    .hbtn svg { width: 20px; height: 20px; }
+    .hbtn.on { background: var(--navy); color: #fff; border-color: var(--navy); }
 
     .shell { max-width: 1180px; margin: 0 auto; padding: 16px 16px calc(96px + env(safe-area-inset-bottom)); }
-    .card { background: #fff; border-radius: 18px; padding: 18px; border: 1px solid var(--line); }
+    .card { background: var(--card); border-radius: 20px; padding: 18px; border: 1px solid var(--line); box-shadow: var(--shadow); }
+    .card h2::before { content: ""; display: inline-block; width: 4px; height: 16px; border-radius: 2px; background: var(--red); margin-right: 8px; vertical-align: -2px; }
+    .card.login h1.pt { letter-spacing: .06em; }
     .card + .card { margin-top: 14px; }
     .login { max-width: 420px; margin: 28px auto; }
     .login .biglogo { width: 84px; height: 84px; border-radius: 20px; display: block; margin: 0 0 14px; }
     h1.pt { font-size: 22px; color: var(--ink); margin: 0 0 4px; }
-    h2 { margin: 0 0 6px; font-size: 18px; color: var(--ink); }
+    h2 { margin: 0 0 6px; font-size: 17px; color: var(--ink); letter-spacing: .04em; }
     h3.gh { font-size: 14px; color: var(--muted); font-weight: 600; margin: 22px 0 8px; }
     .muted { color: var(--muted); font-size: 14px; }
-    label { display: block; font-size: 14px; color: #3c4b5e; margin: 14px 0 6px; font-weight: 600; }
+    label { display: block; font-size: 14px; color: #3F3A31; margin: 14px 0 6px; font-weight: 700; }
     label.inline { display: flex; align-items: center; gap: 8px; font-weight: 400; }
-    input[type=email], input[type=text], input[type=month], input[type=date], select.full, textarea { width: 100%; font-size: 16px; padding: 11px 12px; border: 1px solid #c7d0dc; border-radius: 12px; background: #fff; color: var(--ink); }
+    input[type=email], input[type=text], input[type=month], input[type=date], select.full, textarea { width: 100%; font-size: 16px; padding: 11px 12px; border: 1px solid var(--line2); border-radius: 14px; background: #fff; color: var(--ink); }
+    /* iPhone 的日期／月份欄位預設比畫面寬，而且內容置中：統一成跟其他欄位一樣 */
+    input[type=month], input[type=date] { -webkit-appearance: none; appearance: none; display: block; box-sizing: border-box; min-width: 0; max-width: 100%; min-height: 46px; text-align: left; line-height: 1.3; }
+    input[type=month]::-webkit-date-and-time-value, input[type=date]::-webkit-date-and-time-value { text-align: left; margin: 0; }
+    input[type=month]::-webkit-datetime-edit, input[type=date]::-webkit-datetime-edit { padding: 0; }
     textarea { min-height: 140px; }
-    input:focus, select:focus, textarea:focus { outline: 2px solid rgba(242,180,0,.6); border-color: #b98a00; }
-    .primary { width: 100%; margin-top: 14px; padding: 14px; border: 0; border-radius: 14px; background: var(--char); color: #fff; font-size: 16px; font-weight: 700; }
-    .primary.red { background: var(--red); box-shadow: 0 8px 20px rgba(210,20,28,.22); }
-    .primary:disabled { background: #a8b3c2; box-shadow: none; }
-    .btn { padding: 8px 13px; border: 1px solid #c7d0dc; border-radius: 10px; background: #fff; font-size: 14px; color: var(--ink); text-decoration: none; display: inline-block; white-space: nowrap; }
+    input:focus, select:focus, textarea:focus { outline: 2px solid rgba(224,161,58,.55); border-color: #B07A1E; }
+    .primary { width: 100%; margin-top: 14px; padding: 14px; min-height: 50px; border: 0; border-radius: 16px; background: var(--navy); color: #fff; font-size: 16px; font-weight: 700; letter-spacing: .04em; }
+    .primary.red { background: var(--red); box-shadow: 0 6px 16px rgba(179,38,30,.2); }
+    .primary:disabled { background: #B9B0A0; box-shadow: none; }
+    .btn { padding: 8px 14px; border: 1px solid var(--line2); border-radius: 12px; background: var(--card); font-size: 14px; color: var(--ink); text-decoration: none; display: inline-block; white-space: nowrap; }
     .btn.dark { background: var(--char); color: #fff; border-color: var(--char); }
-    .btn.amber { background: var(--amber); color: var(--char); border-color: var(--amber); font-weight: 700; }
-    .btn.danger { color: var(--red); border-color: #f3c2c4; }
+    .btn.amber { background: var(--red); color: #fff; border-color: var(--red); font-weight: 700; }
+    .btn.danger { color: var(--red); border-color: #E8B9B4; }
     .btn.armed { background: var(--red); color: #fff; border-color: var(--red); }
     .linkbtn { background: none; border: 0; color: var(--navy2); padding: 10px 0 0; font-size: 14px; }
     .msg { margin-top: 12px; font-size: 14px; min-height: 20px; white-space: pre-line; }
@@ -63,19 +73,20 @@
 
     /* 導覽：寬螢幕在左邊，手機在下面 */
     .app { display: block; }
-    .tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; display: flex; background: #fff; border-top: 1px solid var(--line); padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); }
-    .tabs button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; border: 0; background: none; font-size: 11px; color: var(--muted); padding: 4px 0; position: relative; }
-    .tabs button .i { font-size: 21px; line-height: 1.1; filter: grayscale(1); opacity: .7; }
-    .tabs button.on { color: var(--char); font-weight: 700; }
-    .tabs button.on .i { filter: none; opacity: 1; }
+    .tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; display: flex; background: rgba(255,253,248,.97); border-top: 1px solid var(--line); padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); }
+    .tabs button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; border: 0; background: none; font-size: 11px; color: var(--muted); padding: 4px 0; min-height: 50px; position: relative; }
+    .tabs button .i { display: flex; line-height: 1; }
+    .tabs button .i svg { width: 23px; height: 23px; }
+    .tabs button.on { color: var(--red); font-weight: 700; }
+    .tabs button.on .i svg { stroke-width: 2.1; }
     .tabs button.wide { display: none; }
     .badge { position: absolute; top: 0; left: 50%; margin-left: 6px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--red); color: #fff; font-size: 11px; font-weight: 700; line-height: 18px; padding: 0 5px; }
     @media (min-width: 900px) {
       .app { display: grid; grid-template-columns: 200px 1fr; gap: 22px; align-items: start; }
       .tabs { position: sticky; top: 76px; flex-direction: column; background: transparent; border: 0; padding: 0; gap: 2px; }
-      .tabs button, .tabs button.wide { display: flex; flex-direction: row; gap: 10px; font-size: 15px; padding: 10px 12px; border-radius: 12px; color: #3c4b5e; text-align: left; }
-      .tabs button .i { font-size: 18px; }
-      .tabs button.on { background: var(--char); color: #fff; }
+      .tabs button, .tabs button.wide { display: flex; flex-direction: row; align-items: center; gap: 10px; font-size: 15px; padding: 10px 12px; min-height: 44px; border-radius: 14px; color: #3F3A31; text-align: left; }
+      .tabs button .i svg { width: 20px; height: 20px; }
+      .tabs button.on { background: var(--navy); color: #fff; }
       .tabs button:hover:not(.on) { background: var(--wash); }
       .badge { position: static; margin-left: auto; }
       .shell { padding-bottom: 40px; }
@@ -85,31 +96,31 @@
     /* 總覽 */
     .greet { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
     .greet .d { font-size: 15px; color: var(--muted); }
-    .greet .d b { font-size: 40px; color: var(--ink); line-height: 1; margin-right: 6px; }
+    .greet .d b { font-size: 36px; color: var(--ink); line-height: 1; margin-right: 6px; }
     .todo { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); }
     .todo:first-of-type { border-top: 0; }
     .todo .ic { width: 40px; height: 40px; border-radius: 12px; background: var(--wash); display: flex; align-items: center; justify-content: center; font-size: 20px; flex: 0 0 auto; }
-    .todo.hot .ic { background: #fde3e4; }
+    .todo.hot .ic { background: var(--pink); }
     .todo .grow { flex: 1; min-width: 0; }
     .todo .t { font-weight: 700; }
     .todo .s { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
-    .todo select { font-size: 14px; padding: 6px 8px; border-radius: 8px; border: 1px solid #c7d0dc; max-width: 160px; }
+    .todo select { font-size: 14px; padding: 6px 8px; border-radius: 10px; border: 1px solid var(--line2); max-width: 160px; }
     .quick { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
     @media (min-width: 620px) { .quick { grid-template-columns: repeat(4, 1fr); } }
-    .quick button { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px; border-radius: 14px; border: 1px solid var(--line); background: #fff; text-align: left; font-weight: 600; color: var(--ink); }
+    .quick button { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px; border-radius: 16px; border: 1px solid var(--line); background: var(--wash); text-align: left; font-weight: 600; color: var(--ink); }
     .quick button span { font-size: 22px; line-height: 1; }
     .cols { display: grid; gap: 14px; }
     @media (min-width: 900px) { .cols { grid-template-columns: 1.3fr 1fr; align-items: start; } .cols .card + .card { margin-top: 0; } }
 
     /* 清單列 */
     .sect { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 4px; }
-    .row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #edf1f5; }
+    .row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
     .row:last-child { border-bottom: 0; }
     .row.tap { padding: 0; }
     .rowmain { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; padding: 12px 0; border: 0; background: none; text-align: left; color: inherit; }
     .rowmain .t, .rowmain .sub { display: block; }
     .rowmain:active { background: var(--wash); }
-    .chev { color: #9aa8b8; font-size: 22px; padding-right: 4px; }
+    .chev { color: #A79E8E; font-size: 22px; padding-right: 4px; }
     .btn.sq { width: 36px; height: 36px; padding: 0; text-align: center; font-size: 16px; color: var(--muted); }
     .row .ic { font-size: 20px; width: 40px; height: 40px; border-radius: 12px; background: var(--wash); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
     .grow { flex: 1; min-width: 0; }
@@ -120,22 +131,45 @@
     .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px; flex-wrap: wrap; }
     .hint { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
     .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-    .chip { padding: 6px 12px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: 13px; color: var(--ink); }
-    .chip.on { background: var(--char); color: #fff; border-color: var(--char); }
+    .chip { padding: 6px 12px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); font-size: 13px; color: var(--ink); }
+    .chip.on { background: var(--navy); color: #fff; border-color: var(--navy); }
     .links { display: grid; gap: 8px; margin-top: 12px; }
-    .links a { display: block; text-align: center; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: 700; background: var(--wash); color: var(--navy); }
+    .links a { display: block; text-align: center; padding: 12px; border-radius: 14px; text-decoration: none; font-weight: 700; background: var(--wash); color: var(--navy); }
     .links a.main { background: var(--red); color: #fff; }
+    .links button { display: block; width: 100%; text-align: center; padding: 12px; min-height: 48px; border-radius: 14px; border: 0; font-weight: 700; background: var(--wash); color: var(--navy); cursor: pointer; }
+    .links button.main { background: var(--red); color: #fff; }
+    .links button:disabled { opacity: .6; }
+    /* 確認視窗 */
+    .askbody { margin: 10px 0 4px; line-height: 1.7; color: #3F3A31; }
+    .askbody .who { font-size: 20px; font-weight: 800; color: var(--ink); margin: 6px 0; }
+    .askbody .note { background: #fdeced; border: 1px solid #f3c2c4; color: var(--red2); border-radius: 10px; padding: 8px 10px; font-size: 13px; margin-top: 8px; }
+    .askbtns { display: flex; gap: 10px; margin-top: 16px; }
+    .askbtns > * { flex: 1; margin: 0; padding: 12px; font-size: 16px; text-align: center; }
+    /* 消假 */
+    .lfoot { display: flex; justify-content: flex-end; margin-top: 8px; }
+    .cancelbtn { border: 1px solid #E8B9B4; background: var(--card); color: var(--red); border-radius: 9px; padding: 5px 12px; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .ccard { display: flex; gap: 10px; align-items: center; border: 1px dashed var(--line2); border-radius: 16px; padding: 10px 12px; margin-top: 8px; background: var(--wash); }
+    .ccard .grow { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+    .ccard .nm { font-weight: 700; text-decoration: line-through; color: var(--muted); }
+    .ccard .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    /* 設定軟鎖 */
+    .lockrow { display: flex; gap: 10px; align-items: center; background: var(--wash); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; margin: 12px 0 4px; font-size: 14px; }
+    .lockrow .grow { flex: 1; min-width: 0; }
+    .lockrow.open { background: #fff7e6; border-color: #f5d48a; }
+    #settingsForm { border: 0; margin: 0; padding: 0; min-width: 0; }
+    #settingsForm.locked input, #settingsForm.locked select, #settingsForm.locked textarea { background: var(--wash); color: var(--muted); }
     .warn { margin-top: 12px; font-size: 13px; color: #7c4a03; background: #fff7e0; border: 1px solid #f5d77a; border-radius: 12px; padding: 10px 12px; white-space: pre-line; }
     ul.plain { list-style: none; padding: 0; margin: 12px 0 0; font-size: 14px; }
-    ul.plain li { padding: 7px 0; border-bottom: 1px solid #edf1f5; overflow-wrap: anywhere; white-space: pre-line; }
+    ul.plain li { padding: 7px 0; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; white-space: pre-line; }
     .btnrow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; align-items: center; }
-    .log { font-size: 13px; padding: 9px 0; border-bottom: 1px solid #edf1f5; }
+    .log { font-size: 13px; padding: 9px 0; border-bottom: 1px solid var(--line); }
     .log b { font-weight: 700; }
     .typepick { display: flex; flex-wrap: wrap; gap: 6px; }
-    .typepick button { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 6px 12px; font-size: 14px; }
+    .typepick button { border: 1px solid var(--line); background: var(--card); min-height: 40px; border-radius: 999px; padding: 6px 12px; font-size: 14px; }
     .typepick button.on { color: #fff; border-color: transparent; }
-    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    @media (max-width: 520px) { .two { grid-template-columns: 1fr; gap: 0; } .gtxt { display: none; } }
+    .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+    .two > div { min-width: 0; }
+    @media (max-width: 520px) { .two { grid-template-columns: minmax(0, 1fr); gap: 0; } .gtxt { display: none; } }
     .two label { margin-top: 14px; }
     details.fold { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 12px; }
     details.fold summary { cursor: pointer; color: var(--muted); font-size: 14px; }
@@ -150,19 +184,19 @@
     .daterow label { margin: 0; white-space: nowrap; font-size: 14px; }
     .daterow input { flex: 1; min-width: 0; }
     .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 14px; }
-    .stat { background: var(--wash); border-radius: 14px; padding: 10px 6px; text-align: center; }
-    .stat .n { font-family: "Barlow Condensed", "Avenir Next Condensed", sans-serif; font-size: 30px; font-weight: 700; color: var(--ink); line-height: 1.05; }
+    .stat { background: var(--wash); border: 1px solid var(--line); border-radius: 16px; padding: 10px 6px; text-align: center; }
+    .stat .n { font-family: var(--font); font-variant-numeric: tabular-nums; font-size: 28px; font-weight: 700; color: var(--ink); line-height: 1.05; }
     .stat .l { font-size: 11.5px; color: var(--muted); }
     .stat.hot .n { color: var(--red); }
-    .lcard { border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px 12px 16px; margin-top: 10px; background: #fff; position: relative; overflow: hidden; }
+    .lcard { border: 1px solid var(--line); border-radius: 18px; padding: 12px 14px 12px 16px; margin-top: 10px; background: var(--card); box-shadow: var(--shadow); position: relative; overflow: hidden; }
     .lcard::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--navy); }
     .lcard.new::before { background: var(--red); }
     .lhead { display: flex; gap: 10px; align-items: center; }
     .seq { width: 28px; height: 28px; border-radius: 50%; background: var(--wash); color: var(--ink); font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
     .lname { font-size: 17px; font-weight: 700; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-    .pos { font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 6px; background: var(--navy); color: #fff; }
+    .pos { font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 999px; background: #E6ECF3; color: var(--navy); }
     .pos.miss { background: #fff1c2; color: #7c4a03; }
-    .newtag { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; background: var(--red); color: #fff; }
+    .newtag { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: var(--red); color: #fff; }
     .signer { margin-top: 10px; display: flex; align-items: center; gap: 8px; background: var(--wash); border-radius: 12px; padding: 9px 12px; }
     .signer .k { font-size: 12px; color: var(--muted); }
     .signer b { font-size: 16px; color: var(--ink); }
@@ -170,60 +204,60 @@
     .signer.none { background: #fdeced; }
     .signer.none b { color: var(--red); }
     .skip { margin-top: 6px; font-size: 12px; color: var(--red2); }
-    .ans { margin-top: 6px; font-size: 13px; color: #334155; }
+    .ans { margin-top: 6px; font-size: 13px; color: #3F3A31; }
     .ans span { color: var(--muted); }
-    .seg2 { display: flex; background: var(--wash); border-radius: 12px; padding: 3px; margin-top: 10px; }
+    .seg2 { display: flex; background: var(--wash); border: 1px solid var(--line); border-radius: 14px; padding: 3px; margin-top: 10px; }
     .seg2 button { flex: 1; border: 0; background: transparent; border-radius: 9px; padding: 8px 4px; font-size: 14px; font-weight: 600; color: var(--muted); }
-    .seg2 button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 2px rgba(23,32,43,.18); }
+    .seg2 button.on { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(60,45,20,.18); }
     .seg2 button .c { font-size: 12px; color: var(--muted); margin-left: 4px; }
-    .cat { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: #fde3e4; color: var(--red2); }
+    .cat { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--pink); color: var(--red2); }
     .lockbar { margin-top: 12px; display: flex; align-items: center; gap: 8px; background: #fff7e0; border: 1px solid #f5d77a; color: #6b4e00; border-radius: 12px; padding: 10px 12px; font-size: 13px; }
-    .lockbar button { border: 1px solid #e0b74a; background: #fff; color: #6b4e00; border-radius: 9px; padding: 5px 9px; font-size: 12px; white-space: nowrap; }
+    .lockbar button { border: 1px solid #e0b74a; background: var(--card); color: #6b4e00; border-radius: 9px; padding: 5px 9px; font-size: 12px; white-space: nowrap; }
     .proxy { margin-top: 8px; display: flex; align-items: center; gap: 8px; background: #fdeced; border: 1px solid #f3c2c4; color: var(--red2); border-radius: 12px; padding: 8px 10px; font-size: 13px; }
     .proxy.ok { background: #effaf2; border-color: #bfe6cb; color: #166534; }
     .proxy .grow { flex: 1; min-width: 0; overflow-wrap: anywhere; }
-    .proxy button { border: 1px solid currentColor; background: #fff; color: inherit; border-radius: 9px; padding: 5px 10px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+    .proxy button { border: 1px solid currentColor; background: var(--card); color: inherit; border-radius: 9px; padding: 5px 10px; font-size: 12px; font-weight: 700; white-space: nowrap; }
     .proxy button.armed { background: var(--red); color: #fff; border-color: var(--red); }
     .lcard.hold::before { background: var(--amber); }
     .selfok { margin-top: 6px; font-size: 12px; color: var(--ok); }
-    .latetag { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: #fff1c2; color: #7c4a03; }
+    .latetag { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #fff1c2; color: #7c4a03; }
     .locktag { font-size: 11px; color: var(--muted); }
     details.tools { margin-top: 16px; border-top: 1px dashed var(--line); padding-top: 10px; }
     details.tools summary { cursor: pointer; color: var(--muted); font-size: 14px; }
 
-    #loading { position: fixed; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--char); color: #fff; font-size: 14px; padding: 8px 16px; border-radius: 999px; z-index: 40; box-shadow: 0 6px 18px rgba(23,32,43,.3); }
-    .wn { position: fixed; inset: 0; background: rgba(23,32,43,.55); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 16px; }
-    .wn-card { background: #fff; border-radius: 20px; width: 100%; max-width: 460px; max-height: 84vh; overflow: auto; padding: 20px; }
+    #loading { position: fixed; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--ink); color: #fff; font-size: 14px; padding: 8px 16px; border-radius: 999px; z-index: 40; box-shadow: 0 6px 18px rgba(23,32,43,.3); }
+    .wn { position: fixed; inset: 0; background: rgba(34,32,28,.5); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 16px; }
+    .wn-card { background: var(--card); border-radius: 22px; width: 100%; max-width: 460px; max-height: 84vh; overflow: auto; padding: 20px; }
     .wn-card h2 { margin: 0 0 4px; }
     .wn-ver { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
     .wn-ver:first-of-type { border-top: 0; padding-top: 0; }
     .wn-ver .v { font-weight: 700; }
     .wn-ver .d { font-size: 12px; color: var(--muted); margin-left: 6px; }
-    .wn-ver ul { margin: 6px 0 0; padding-left: 20px; font-size: 14px; line-height: 1.6; color: #334155; }
-    .verfoot { text-align: center; font-size: 12px; color: #8c99a8; margin: 22px 0 8px; }
+    .wn-ver ul { margin: 6px 0 0; padding-left: 20px; font-size: 14px; line-height: 1.6; color: #3F3A31; }
+    .verfoot { text-align: center; font-size: 12px; color: var(--muted); margin: 22px 0 8px; }
     .maintbar { margin: 0 0 12px; border-radius: 14px; padding: 11px 14px; font-size: 14px; display: flex; gap: 10px; align-items: center; }
     .maintbar.soon { background: #fff7e0; border: 1px solid #f5d77a; color: #5c4300; }
     .maintbar.on { background: #fdeced; border: 1px solid #f3c2c4; color: var(--red2); }
     .maintbar .grow { flex: 1; }
-    .mcard { background: #fffbef; border: 1px solid #f5d77a; border-radius: 16px; padding: 16px; margin-bottom: 8px; }
+    .mcard { background: #FFF8E8; border: 1px solid #EBCB85; border-radius: 18px; padding: 16px; margin-bottom: 8px; }
     .mcard h2 { margin-bottom: 2px; }
     .verwarn { margin: 0 0 12px; background: #fdeced; border: 1px solid #f3c2c4; color: var(--red2); border-radius: 12px; padding: 10px 12px; font-size: 13px; }
-    #toast { position: fixed; left: 50%; bottom: calc(90px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--char); color: #fff; padding: 10px 18px; border-radius: 999px; font-size: 14px; z-index: 60; }
+    #toast { position: fixed; left: 50%; bottom: calc(90px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 18px; border-radius: 999px; font-size: 14px; z-index: 60; }
     [hidden] { display: none !important; }
     /* ===== 共用：請假紀錄、行事曆 ===== */
-    .num { font-family: "Barlow Condensed", "Avenir Next Condensed", "Arial Narrow", sans-serif; font-variant-numeric: tabular-nums; }
+    .num { font-family: var(--font); font-variant-numeric: tabular-nums; font-weight: 700; }
     .quiet { color: var(--muted); font-size: 13px; margin: 6px 0; }
-    .tag { display: inline-block; font-size: 12px; font-weight: 600; color: var(--navy); background: var(--wash); border-radius: 6px; padding: 1px 7px; margin-left: 6px; vertical-align: 2px; }
+    .tag { display: inline-block; font-size: 12px; font-weight: 700; color: var(--navy); background: #E6ECF3; border-radius: 999px; padding: 1px 7px; margin-left: 6px; vertical-align: 2px; }
     .filters { display: flex; gap: 10px; align-items: flex-end; }
     .filters label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); min-width: 0; }
     .filters label.grow { flex: 1; }
-    .filters select { width: 100%; font-size: 16px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: #fff; color: var(--ink); }
-    .seg { display: flex; background: var(--wash); border-radius: 12px; padding: 3px; margin-top: 12px; }
+    .filters select { width: 100%; font-size: 16px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); color: var(--ink); }
+    .seg { display: flex; background: var(--wash); border: 1px solid var(--line); border-radius: 14px; padding: 3px; margin-top: 12px; }
     .seg button { flex: 1; border: 0; background: transparent; border-radius: 9px; padding: 8px 4px; font-size: 14px; font-weight: 600; color: var(--muted); }
-    .seg button.on { background: #fff; color: var(--navy); box-shadow: 0 1px 2px rgba(1,38,67,.18); }
+    .seg button.on { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(60,45,20,.18); }
     .months { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; height: 112px; margin: 16px 0 4px; }
     .mo { position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; border: 0; background: transparent; padding: 0; border-radius: 8px; min-width: 0; }
-    .mo-bar { width: 70%; min-height: 3px; background: #c9d3df; border-radius: 4px 4px 0 0; }
+    .mo-bar { width: 70%; min-height: 3px; background: #D8CFBE; border-radius: 4px 4px 0 0; }
     .mo:not(.zero) .mo-bar { background: var(--navy); }
     .mo.now .mo-l { color: var(--red); font-weight: 700; }
     .mo.sel { background: var(--wash); }
@@ -232,41 +266,43 @@
     .mo-l { font-size: 14px; color: var(--muted); padding: 3px 0 2px; }
     .summary { font-size: 15px; margin: 10px 0 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
     .summary .clear { border: 0; background: none; color: var(--navy2); font-size: 13px; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
-    .tablewrap { overflow: auto; max-height: 70vh; background: #fff; border-radius: 14px; border: 1px solid var(--line); }
+    .tablewrap { overflow: auto; max-height: 70vh; background: var(--card); border-radius: 18px; border: 1px solid var(--line); box-shadow: var(--shadow); }
     .ltable { border-collapse: collapse; width: 100%; font-size: 15px; }
-    .ltable th { position: sticky; top: 0; background: #fff; color: var(--muted); font-weight: 600; font-size: 12px; text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--navy); white-space: nowrap; }
+    .ltable th { position: sticky; top: 0; background: var(--wash); color: var(--muted); font-weight: 700; font-size: 12px; text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--ink); white-space: nowrap; }
     .ltable td { padding: 10px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
     .ltable td small { display: block; color: var(--muted); font-size: 12px; }
     .ltable td.c { text-align: center; font-size: 18px; }
     .ltable td.total { font-weight: 700; color: var(--navy); }
     .ltable td.mlist { color: var(--muted); font-size: 13px; white-space: normal; }
     .ltable tr { cursor: pointer; }
-    .ltable tr.none td { color: #a3afbd; }
-    .ltable tr.none td.total { color: #a3afbd; font-weight: 400; }
-    .person { background: var(--navy); color: #fff; border-radius: 16px; padding: 14px 16px; margin-bottom: 8px; }
+    .ltable tr.none td { color: #A79E8E; }
+    .ltable tr.none td.total { color: #A79E8E; font-weight: 400; }
+    .person { background: var(--navy); color: #fff; border-radius: 20px; padding: 14px 16px; margin-bottom: 8px; }
     .person-n { font-size: 20px; font-weight: 700; }
     .person-n .tag { background: rgba(255,255,255,.16); color: #fff; }
-    .person-n .quiet { color: #b9c7d8; margin-left: 6px; font-size: 13px; font-weight: 400; }
+    .person-n .quiet { color: #C9D6E6; margin-left: 6px; font-size: 13px; font-weight: 400; }
     .person-k { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 6px; color: #d4deea; font-size: 14px; }
     .person-k b { font-size: 24px; color: #fff; }
-    .rec { display: flex; gap: 14px; align-items: flex-start; padding: 12px 2px; border-bottom: 1px solid var(--line); }
+    .recs { background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); overflow: hidden; }
+    .rec { display: flex; gap: 14px; align-items: flex-start; padding: 12px 14px; border-top: 1px solid var(--line); }
+    .rec:first-child { border-top: 0; }
     .rec-m { width: 46px; flex: 0 0 auto; text-align: center; line-height: 1; }
-    .rec-m b { display: block; font-size: 30px; color: var(--navy); }
+    .rec-m b { display: block; font-size: 26px; color: var(--ink); }
     .rec-m span { font-size: 12px; color: var(--muted); }
     .rec-b { flex: 1; min-width: 0; }
     .rec-t { font-weight: 600; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
     .rec-t .tag { margin-left: 0; }
     .kind { font-size: 13px; font-weight: 600; color: var(--red); }
-    .rec-note { font-size: 13px; color: var(--ink); background: var(--wash); border-radius: 8px; padding: 6px 8px; margin-top: 4px; overflow-wrap: anywhere; }
+    .rec-note { font-size: 13px; color: var(--ink); background: var(--wash); border-radius: 10px; padding: 6px 8px; margin-top: 4px; overflow-wrap: anywhere; }
     .cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
     .cal-title { font-size: 18px; font-weight: 600; color: var(--navy); }
     .cal-title .num { font-size: 26px; font-weight: 700; margin: 0 2px; }
-    .cal-nav { width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line); background: #fff; font-size: 24px; color: var(--navy); line-height: 1; }
-    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 8px; }
+    .cal-nav { width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); font-size: 24px; color: var(--navy); line-height: 1; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 8px; box-shadow: var(--shadow); }
     .cal-w { text-align: center; font-size: 12px; color: var(--muted); padding: 4px 0 6px; }
     .cal-w.we { color: var(--red); }
-    .cal-d { aspect-ratio: 1 / 1; border: 0; background: transparent; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 0; color: var(--ink); }
-    .cal-d .num { font-size: 18px; line-height: 1; }
+    .cal-d { aspect-ratio: 1 / 1; border: 0; background: transparent; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 0; color: var(--ink); }
+    .cal-d .num { font-size: 17px; line-height: 1; font-weight: 500; }
     .cal-d.blank { visibility: hidden; }
     .cal-d.has { background: var(--wash); }
     .cal-d.today .num { color: #fff; background: var(--red); border-radius: 999px; padding: 3px 6px; }
@@ -274,13 +310,13 @@
     .cal-dots { display: flex; gap: 3px; height: 6px; }
     .cal-dots i { width: 6px; height: 6px; border-radius: 50%; }
     .cal-list-h { font-weight: 700; color: var(--navy); margin: 18px 0 4px; }
-    .ev { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0 12px 12px; border-bottom: 1px solid var(--line); border-left: 4px solid var(--c); margin-top: 6px; background: #fff; border-radius: 0 12px 12px 0; padding-right: 12px; }
-    .ev-date { width: 52px; flex: 0 0 auto; text-align: center; line-height: 1; }
-    .ev-date b { display: block; font-size: 30px; color: var(--navy); }
-    .ev-date span { font-size: 12px; color: var(--muted); }
+    .ev { display: flex; gap: 14px; align-items: flex-start; padding: 12px 14px; border: 1px solid var(--line); margin-top: 8px; background: var(--card); border-radius: 18px; box-shadow: var(--shadow); }
+    .ev-date { width: 52px; flex: 0 0 auto; text-align: center; line-height: 1; border: 1px solid var(--line); border-radius: 12px; padding: 6px 0; background: var(--paper); }
+    .ev-date b { display: block; font-size: 24px; color: var(--ink); }
+    .ev-date span { font-size: 11px; color: var(--c); font-weight: 700; }
     .ev-body { flex: 1; min-width: 0; }
     .ev-t { font-weight: 700; font-size: 16px; }
-    .ev-type { display: inline-block; font-size: 12px; font-weight: 600; color: #fff; background: var(--c); border-radius: 6px; padding: 1px 7px; margin-right: 6px; vertical-align: 2px; }
+    .ev-type { display: inline-block; font-size: 12px; font-weight: 700; color: #fff; background: var(--c); border-radius: 999px; padding: 1px 7px; margin-right: 6px; vertical-align: 2px; }
     .ev-m { font-size: 13px; color: var(--muted); margin-top: 3px; }
     .ev.tap { cursor: pointer; }
     .ev.tap:active { background: var(--wash); }
@@ -294,7 +330,7 @@
     <div class="hdr-in">
       <img class="logo" src="data:image/png;base64,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" alt="">
       <div class="ttl"><div class="brand" id="brand">入口網站</div><div class="tagline">幹部後台</div></div>
-      <button class="hbtn gear" id="gearBtn" hidden aria-label="設定">⚙️<span class="gtxt"> 設定</span></button>
+      <button class="hbtn gear" id="gearBtn" hidden aria-label="設定"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg><span class="gtxt">設定</span></button>
       <button class="hbtn" id="logoutBtn" hidden>登出</button>
     </div>
   </header>
@@ -305,10 +341,10 @@
       <div class="card login">
         <img class="biglogo" src="data:image/png;base64,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" alt="">
         <h1 class="pt">幹部後台登入</h1>
-        <p class="muted">輸入你的 Gmail，我們會寄 6 位數驗證碼給你。</p>
+        <p class="muted">輸入你在名冊上登記的信箱，我們會寄 6 位數驗證碼給你。</p>
         <div id="stepEmail">
-          <label for="email">Gmail</label>
-          <input type="email" id="email" autocomplete="email" placeholder="name@gmail.com">
+          <label for="email">信箱</label>
+          <input type="email" id="email" autocomplete="email" placeholder="name@example.com">
           <button class="primary" id="sendBtn">寄送驗證碼</button>
         </div>
         <div id="stepCode" hidden>
@@ -325,13 +361,13 @@
     <!-- 後台 -->
     <section id="vApp" class="app" hidden>
       <nav class="tabs" id="tabs" aria-label="後台選單">
-        <button data-tab="home"><span class="i">🏠</span>總覽<span class="badge" id="bHome" hidden></span></button>
-        <button data-tab="leave"><span class="i">🖨️</span>假單</button>
-        <button data-tab="cal"><span class="i">📅</span>行事曆</button>
-        <button data-tab="tiles"><span class="i">🧭</span>首頁內容</button>
-        <button data-tab="members"><span class="i">👥</span>成員<span class="badge" id="bMembers" hidden></span></button>
-        <button class="wide" data-tab="view"><span class="i">📊</span>報表</button>
-        <button class="wide" data-tab="settings"><span class="i">⚙️</span>設定</button>
+        <button data-tab="home"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-6h4v6"/></svg></span>總覽<span class="badge" id="bHome" hidden></span></button>
+        <button data-tab="leave"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/></svg></span>假單</button>
+        <button data-tab="cal"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>行事曆</button>
+        <button data-tab="tiles"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></span>首頁內容</button>
+        <button data-tab="members"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21 20c0-2.6-1.6-4.8-4-5.6"/></svg></span>成員<span class="badge" id="bMembers" hidden></span></button>
+        <button class="wide" data-tab="view"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg></span>報表</button>
+        <button class="wide" data-tab="settings"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></span>設定</button>
       </nav>
 
       <div class="main">
@@ -491,7 +527,7 @@
           </div>
           <div id="memberImport" hidden>
             <h2>批次匯入名冊</h2>
-            <p class="muted">每行一人：姓名, 職務, 小隊, Gmail。已存在的姓名會更新職務、小隊與 Gmail。</p>
+            <p class="muted">每行一人：姓名, 職務, 小隊, 信箱。已存在的姓名會更新職務、小隊與信箱。</p>
             <div class="btnrow"><button class="btn" id="fromForm">📋 從 Google 表單帶入名單</button></div>
             <textarea id="importText" placeholder="王大明, 小隊長, 第一小隊&#10;林小華, 隊員, 第一小隊, hua@gmail.com&#10;陳志明, 幹事"></textarea>
             <div class="btnrow">
@@ -507,9 +543,9 @@
             <div class="hint">要新增職務（例如 器材組長）：到 ⚙️ 設定 →「職務順序」加進去，這裡就會出現。</div>
             <label for="mSquad">小隊（可留空）</label><input type="text" id="mSquad" maxlength="30" placeholder="例如 第一小隊" list="squadList" autocomplete="off"><datalist id="squadList"></datalist>
             <div class="hint">可以從清單選現有小隊；成立新小隊就直接打新名稱（例如 第二小隊），同一小隊的寫法要一致。</div>
-            <label for="mEmail">Gmail（登入後台、比對代填用）</label><input type="email" id="mEmail">
+            <label for="mEmail">信箱（登入後台、比對代填用）</label><input type="email" id="mEmail">
             <label for="mRole">系統權限</label><select class="full" id="mRole"></select>
-            <div class="hint">一般：只能用前台。幹部：可以進後台（必須填 Gmail）。</div>
+            <div class="hint">一般：只能用前台。幹部：可以進後台（必須填信箱）。</div>
             <label class="inline"><input type="checkbox" id="mActive"> 啟用（停用後不能登入，也不會被排為職務代理人）</label>
             <div class="btnrow">
               <button class="btn dark" id="saveMember">儲存</button>
@@ -542,12 +578,18 @@
           <div class="warn" id="genWarn" hidden></div>
           <div class="chips" id="leaveFilter" style="margin-top:14px"></div>
           <div id="leaveCards"></div>
+          <details class="fold" id="cancelFold" hidden>
+            <summary id="cancelSum">已消假</summary>
+            <div class="hint">消假只是做記號：不列印、不計入統計，表單回應不會被刪掉，按「復原」就回來。</div>
+            <div id="cancelList"></div>
+          </details>
           <details class="tools">
             <summary>假單工具（檢查設定、範本欄位）</summary>
             <div class="btnrow">
               <button class="btn" id="checkLeave">檢查設定</button>
               <button class="btn" id="listPh">列出範本可用欄位</button>
               <button class="btn" id="sampleTpl">建立範例範本</button>
+              <button class="btn" id="shareLeave">🔗 假單資料夾共用給幹部</button>
             </div>
             <ul class="plain" id="leaveInfo"></ul>
           </details>
@@ -572,9 +614,12 @@
             <div class="msg" id="maintMsg"></div>
           </div>
           <h2 style="margin-top:22px">系統設定</h2>
-          <p class="muted">改完按最下面的「儲存設定」。不確定的項目不用動。</p>
-          <div id="settings"></div>
-          <button class="primary" id="saveSettings">儲存設定</button>
+          <p class="muted">不確定的項目不用動。</p>
+          <div class="lockrow" id="setLockRow"><div class="grow" id="setLockText">🔒 已鎖定，避免誤觸。</div><button class="btn" id="setLockBtn">🔓 解鎖修改</button></div>
+          <fieldset id="settingsForm" class="locked" disabled>
+            <div id="settings"></div>
+            <button class="primary" id="saveSettings" hidden>儲存設定</button>
+          </fieldset>
           <div class="msg" id="settingsMsg"></div>
           <details class="fold" id="logFold">
             <summary>操作紀錄（最近 150 筆）</summary>
@@ -601,6 +646,14 @@
       <button class="primary" id="maintPopClose">我知道了</button>
     </div>
   </div>
+  <div class="wn" id="askPop" hidden role="dialog" aria-modal="true" aria-labelledby="askTitle">
+    <div class="wn-card">
+      <h2 id="askTitle"></h2>
+      <div id="askBody" class="askbody"></div>
+      <label for="askInput" id="askInputLabel" hidden></label><input type="text" id="askInput" maxlength="100" hidden>
+      <div class="askbtns"><button class="btn" id="askNo">取消</button><button class="primary red" id="askYes">確定</button></div>
+    </div>
+  </div>
   <div id="loading" hidden>處理中…</div>
   <div id="toast" hidden></div>
   <script src="config.js"></script>
@@ -608,7 +661,7 @@
     /* ===== 共用畫面：請假紀錄、行事曆（前台、後台內容相同，由 build 自動同步） ===== */
     var Views = (function () {
       var WEEK = ['日', '一', '二', '三', '四', '五', '六'];
-      var TYPE_COLOR = { '常訓': '#d2141c', '複訓': '#e8590c', '會議': '#012643', '活動': '#1f8a4c', '勤務': '#6b4fbb', '其他': '#5a6b80' };
+      var TYPE_COLOR = { '常訓': '#B3261E', '複訓': '#C2410C', '會議': '#1F3A5F', '活動': '#2F7D4F', '勤務': '#6B4FBB', '其他': '#665F53' };
       function color(t) { return TYPE_COLOR[t] || TYPE_COLOR['其他']; }
       function pad(n) { return (n < 10 ? '0' : '') + n; }
       function ymd(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
@@ -748,12 +801,12 @@
             el('div', { cls: 'person-n' }, [state.name, p.position ? el('span', { cls: 'tag', text: p.position }) : null, p.squad ? el('span', { cls: 'quiet', text: p.squad }) : null]),
             el('div', { cls: 'person-k' }, Object.keys(byKind).length ? Object.keys(byKind).map(function (k) { return el('span', {}, [k + ' ', el('b', { cls: 'num', text: String(byKind[k]) }), ' 次']); }) : [el('span', { text: '沒有請假紀錄' })]),
           ]));
-          shown.forEach(function (r) { box.appendChild(recordRow(r, opts, false)); });
+          (function () { var lst = el('div', { cls: 'recs' }); shown.forEach(function (r) { lst.appendChild(recordRow(r, opts, false)); }); if (shown.length) box.appendChild(lst); })();
           return;
         }
         if (state.month) {
           if (!shown.length) box.appendChild(el('p', { cls: 'quiet', text: state.month + '月沒有人請假。' }));
-          shown.forEach(function (r) { box.appendChild(recordRow(r, opts, true, pos)); });
+          (function () { var lst = el('div', { cls: 'recs' }); shown.forEach(function (r) { lst.appendChild(recordRow(r, opts, true, pos)); }); if (shown.length) box.appendChild(lst); })();
           return;
         }
         // 全隊：每個人一列
@@ -820,12 +873,33 @@
      *   window.PORTAL_API_URL = 'https://script.google.com/macros/s/xxxx/exec';
      * 沒有 config.js 時才用下面這行 */
     var API_URL = window.PORTAL_API_URL || 'PASTE_ADMIN_API_URL';
-    var APP_VERSION = '2.1.0';
-    var MIN_API_VERSION = '2.1.0';         // 這版網頁需要的 Apps Script 版本
+    var APP_VERSION = '2.3.1';
+    var MIN_API_VERSION = '2.2.0';         // 這版網頁需要的 Apps Script 版本
     /* ================================= */
 
     /* 更新紀錄：最新的放最上面。登入後第一次看到新版本會跳出（含上次看過之後的所有版本） */
     var CHANGELOG = [
+      { v: '2.3.1', date: '2026-11-09', items: [
+        '登入畫面、名冊、權限申請的「Gmail」改成「信箱」：不是 Gmail 的信箱也可以登入後台',
+        '這版只改網頁：GitHub 兩個倉庫換 index.html 就好',
+      ] },
+      { v: '2.3.0', date: '2026-11-09', items: [
+        '新外觀（D4 圓體公文風）：米色紙底、圓體字、紅色印章，前台後台一致',
+        '前台首頁改成報頭＋框框分區：近期行程、查詢、常用連結各一個框，比較好讀',
+        '後台選單、設定按鈕改成線條圖示；卡片、按鈕、標籤都改成圓角',
+        '行事曆、請假紀錄、報表等內頁也換成同樣的配色和框框',
+        '這版只改網頁：GitHub 兩個倉庫換 index.html 就好，Apps Script 不用動',
+      ] },
+      { v: '2.2.0', date: '2026-11-09', items: [
+        '假單「消假」：假單頁每張卡片右下角有「消假」，按下去會再確認「確定要消掉 某某某 的假單嗎？」，可以填原因',
+        '消假只是做記號，不會刪掉表單回應：不列印、不計入前後台統計、也不影響其他人的代理人；下方「已消假」可以復原',
+        '設定加上軟鎖：要先按「🔓 解鎖修改」才能改，儲存後或離開設定頁自動鎖回去（維護公告不受影響）',
+        'PDF 打不開（要權限）修正：產生假單時，自動把「假單存檔」資料夾共用給名冊上有填 Gmail 的幹部；假單工具也有手動按鈕',
+        '「下載 PDF」「下載 Word」改成直接下載檔案，不會再卡在 Google 文件轉圈；Word 按了才轉檔，列印也變快',
+        '速度：同一次動作內設定、名冊只讀一次；字型改成不擋畫面載入',
+        'iPhone 上行事曆、假單日期欄位超出畫面的跑版修正',
+        '更新：GitHub 兩個 index.html、Apps Script 前台（Code、Data、Views）與後台（Code、Data、Views、Leave），部署新版本',
+      ] },
       { v: '2.1.0', date: '2026-11-09', items: [
         '新增「維護公告」（⚙️ 設定最上面，總覽也有捷徑）：可以預約維護時段或立即維護',
         '預約時段：開始前前台首頁顯示預告和倒數；時間到前台變成「系統維護中」並顯示預計恢復時間；結束時間一到自動恢復',
@@ -1012,6 +1086,34 @@
       };
     }
     function okTo(node, text) { node.textContent = text; node.className = 'msg ok'; }
+    /** 確認視窗：回傳 Promise，取消 → null，確定 → { text } */
+    var askResolve = null;
+    function ask(o) {
+      if (askResolve) askDone(null);
+      $('askTitle').textContent = o.title;
+      var b = $('askBody');
+      b.innerHTML = '';
+      (o.body || []).forEach(function (n) { if (n) b.appendChild(n); });
+      var inp = $('askInput');
+      inp.hidden = $('askInputLabel').hidden = !o.input;
+      inp.value = '';
+      if (o.input) { $('askInputLabel').textContent = o.input; inp.placeholder = o.placeholder || ''; }
+      $('askYes').textContent = o.ok || '確定';
+      $('askYes').className = 'primary' + (o.danger ? ' red' : '');
+      $('askPop').hidden = false;
+      setTimeout(function () { $('askNo').focus(); }, 30);
+      return new Promise(function (res) { askResolve = res; });
+    }
+    function askDone(v) {
+      $('askPop').hidden = true;
+      var r = askResolve;
+      askResolve = null;
+      if (r) r(v);
+    }
+    $('askNo').addEventListener('click', function () { askDone(null); });
+    $('askYes').addEventListener('click', function () { askDone({ text: $('askInput').value.trim() }); });
+    $('askPop').addEventListener('click', function (e) { if (e.target === $('askPop')) askDone(null); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !$('askPop').hidden) askDone(null); });
     function toast(text) {
       var t = $('toast');
       t.textContent = text;
@@ -1055,7 +1157,7 @@
     }
     $('sendBtn').addEventListener('click', function () {
       var email = $('email').value.trim();
-      if (!email) { loginMsg('請輸入 Gmail', true); return; }
+      if (!email) { loginMsg('請輸入信箱', true); return; }
       $('sendBtn').disabled = true;
       $('noAccess').hidden = true;
       run('apiRequestCode', [email]).then(function (r) {
@@ -1063,8 +1165,8 @@
         if (r && r.noAccess) {
           loginMsg('');
           var na = $('noAccess');
-          na.textContent = (r.inRoster ? r.name + '，' : '') + '這個 Gmail（' + email + '）還沒有後台權限。已經通知幹部，幹部在後台按「開通」之後，再回來登入一次就可以了。' +
-            (r.inRoster ? '' : '\n如果你有其他 Gmail 登記在名冊上，也可以換那個試試。');
+          na.textContent = (r.inRoster ? r.name + '，' : '') + '這個信箱（' + email + '）還沒有後台權限。已經通知幹部，幹部在後台按「開通」之後，再回來登入一次就可以了。' +
+            (r.inRoster ? '' : '\n如果你有其他信箱登記在名冊上，也可以換那個試試。');
           na.style.whiteSpace = 'pre-line';
           na.hidden = false;
           return;
@@ -1131,6 +1233,7 @@
     var PANELS = ['home', 'view', 'cal', 'tiles', 'members', 'leave', 'settings'];
     function tab(name) {
       if (PANELS.indexOf(name) < 0) name = 'home';
+      if (name !== 'settings') relockSettings();
       currentTab = name;
       Array.prototype.forEach.call($('tabs').children, function (b) { b.classList.toggle('on', b.getAttribute('data-tab') === name); });
       $('gearBtn').classList.toggle('on', name === 'settings');
@@ -1365,7 +1468,7 @@
       if (!list.length) box.appendChild(el('p', { cls: 'muted', text: '名冊是空的' }));
       list.forEach(function (m) {
         var isMe = !!m.email && m.email === D.me.email;
-        var info = [m.position || '未填職務', m.squad, m.role === '幹部' ? '幹部權限' : '', m.email || '沒填 Gmail', m.active ? '' : '停用']
+        var info = [m.position || '未填職務', m.squad, m.role === '幹部' ? '幹部權限' : '', m.email || '沒填信箱', m.active ? '' : '停用']
           .filter(Boolean).join('・');
         box.appendChild(el('div', { cls: 'row tap' + (m.active ? '' : ' off') }, [
           el('button', { cls: 'rowmain', 'aria-label': '編輯 ' + m.name, onclick: function () { openMemberEditor(m); } }, [
@@ -1434,10 +1537,10 @@
         if (!r.lines.length) { ul.appendChild(el('li', { text: '✅ ' + src + '裡的人都已經在名冊了' })); return; }
         var cur = $('importText').value.replace(/\s+$/, '');
         $('importText').value = (cur ? cur + '\n' : '') + r.lines.join('\n');
-        ul.appendChild(el('li', { text: '從' + src + '找到 ' + r.lines.length + ' 位名冊沒有的人，職務先填「' + (r.defaultPosition || '') + '」。請改成正確的職務、小隊，補上 Gmail，再按「匯入」。' }));
+        ul.appendChild(el('li', { text: '從' + src + '找到 ' + r.lines.length + ' 位名冊沒有的人，職務先填「' + (r.defaultPosition || '') + '」。請改成正確的職務、小隊，補上信箱，再按「匯入」。' }));
         if (r.source !== 'form') ul.appendChild(el('li', { text: '（讀不到表單的姓名選單，只抓到請過假的人。要抓全部的人，請在 Apps Script 編輯器執行一次 initialSetup 重新授權）' }));
         var withMail = r.people.filter(function (p) { return p.email; }).length;
-        if (withMail) ul.appendChild(el('li', { text: '其中 ' + withMail + ' 人的 Gmail 是從他自己送出的表單帶入，請確認是本人的帳號。' }));
+        if (withMail) ul.appendChild(el('li', { text: '其中 ' + withMail + ' 人的信箱是從他自己送出的表單帶入，請確認是本人的帳號。' }));
       }).catch(function (e) {
         btn.disabled = false;
         if (e.message === 'NEED_LOGIN') return;
@@ -1466,6 +1569,31 @@
     function addLink(text, url, cls) {
       if (!url) return;
       $('genLinks').appendChild(el('a', { href: url, target: '_blank', rel: 'noopener', cls: cls || '', text: text }));
+    }
+    /** 直接下載（檔案內容從 API 傳回來，不需要另外開雲端權限；Word 按了才轉檔） */
+    function dlBtn(text, id, kind, cls) {
+      if (!id) return;
+      var b = el('button', { cls: cls || '', text: text });
+      b.addEventListener('click', function () {
+        b.disabled = true;
+        b.textContent = kind === 'docx' ? '⏳ 轉成 Word 中…' : '⏳ 下載中…';
+        run('apiDownloadLeaveFile', [token, id, kind], true).then(saveB64)
+          .catch(function (e) { if (e.message !== 'NEED_LOGIN') toast(e.message); })
+          .then(function () { b.disabled = false; b.textContent = text; });
+      });
+      $('genLinks').appendChild(b);
+    }
+    function saveB64(r) {
+      var bin = atob(r.b64), n = bin.length, arr = new Uint8Array(n);
+      for (var i = 0; i < n; i++) arr[i] = bin.charCodeAt(i);
+      var url = URL.createObjectURL(new Blob([arr], { type: r.mime }));
+      var a = el('a', { href: url });
+      a.download = r.name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+      toast('✅ 已下載：' + r.name);
     }
     function loadLeaveList() {
       var ym = $('ym').value;
@@ -1560,14 +1688,65 @@
           x.skipped.length ? el('div', { cls: 'skip', text: '↑ 往上找：略過 ' + x.skipped.join('、') }) : null,
           x.answers.length ? el('div', { cls: 'ans' }, x.answers.map(function (a) { return el('div', {}, [el('span', { text: a.q + '：' }), a.a]); })) : null,
           proxyLine(x),
+          el('div', { cls: 'lfoot' }, [el('button', { cls: 'cancelbtn', text: '消假', onclick: function () { cancelLeave(x); } })]),
         ]));
       });
+      renderCanceled(r);
+    }
+    /** 已消假清單（可復原） */
+    function renderCanceled(r) {
+      var cl = (r.canceled || []).filter(function (x) { return !leaveCat || x.category === leaveCat; });
+      $('cancelFold').hidden = !cl.length;
+      $('cancelSum').textContent = '已消假（' + cl.length + ' 張）';
+      var cb = $('cancelList');
+      cb.innerHTML = '';
+      cl.forEach(function (x) {
+        cb.appendChild(el('div', { cls: 'ccard' }, [
+          el('div', { cls: 'grow' }, [
+            el('div', { cls: 'nm', text: x.name + (x.position ? '（' + x.position + '）' : '') }),
+            el('div', { cls: 'sub', text: ['請假 ' + x.period, x.category, '消假 ' + x.time + (x.by ? ' ' + x.by : ''), x.reason ? '原因：' + x.reason : ''].filter(Boolean).join('・') }),
+          ]),
+          el('button', { cls: 'btn', text: '復原', onclick: function () { restoreLeave(x); } }),
+        ]));
+      });
+    }
+    function whoLines(x) {
+      return [
+        el('div', { cls: 'who', text: x.name + (x.position ? '（' + x.position + '）' : '') }),
+        el('div', { text: '請假 ' + x.period + (x.category ? '・' + x.category : '') }),
+      ];
+    }
+    function cancelLeave(x) {
+      ask({
+        title: '確定要消假嗎？', ok: '確定消假', danger: true,
+        body: [el('div', { text: '要消掉這張假單：' })].concat(whoLines(x), [
+          x.locked ? el('div', { cls: 'note', text: '⚠️ 這張假單已經列印過，紙本要另外收回。' }) : null,
+          el('div', { cls: 'muted', text: '消假後不會列印、不計入統計；表單回應不會刪掉，之後可以在「已消假」復原。' }),
+        ]),
+        input: '原因（可留空）', placeholder: '例如：臨時可以出勤',
+      }).then(function (a) {
+        if (!a) return;
+        run('apiCancelLeave', [token, x.key, true, a.text]).then(function () {
+          toast('已消掉 ' + x.name + ' 的假單');
+          loadLeaveList();
+        }).catch(function (e) { if (e.message !== 'NEED_LOGIN') toast(e.message); });
+      });
+    }
+    function restoreLeave(x) {
+      ask({ title: '復原這張假單？', ok: '復原', body: whoLines(x).concat([el('div', { cls: 'muted', text: '復原後會重新列入列印和統計。' })]) })
+        .then(function (a) {
+          if (!a) return;
+          run('apiCancelLeave', [token, x.key, false]).then(function () {
+            toast('已復原 ' + x.name + ' 的假單');
+            loadLeaveList();
+          }).catch(function (e) { if (e.message !== 'NEED_LOGIN') toast(e.message); });
+        });
     }
     /** 代填狀態：本人送出 → 綠色小字；代填／不明 Gmail → 紅框＋放行按鈕 */
     function proxyLine(x) {
       if (x.check === 'ok') return el('div', { cls: 'selfok', text: '✓ 本人送出（' + x.sender + '）' });
       if (x.check !== 'proxy' && x.check !== 'unknown') return null;
-      var who = x.check === 'proxy' ? '代填：由 ' + x.senderName + '（' + x.sender + '）送出' : '這個 Gmail 不在名冊：' + x.sender;
+      var who = x.check === 'proxy' ? '代填：由 ' + x.senderName + '（' + x.sender + '）送出' : '這個信箱不在名冊：' + x.sender;
       var b = el('button', { text: x.approved ? '取消放行' : '放行' });
       b.addEventListener('click', function () {
         if (!b.classList.contains('armed')) {
@@ -1602,8 +1781,9 @@
         if (!r.count) okTo($('genMsg'), r.label + ' 沒有需要列印的假單。' + warn);
         else okTo($('genMsg'), '✅ ' + r.label + ' 共 ' + r.count + ' 張，請假日期 ' + r.printDate + '，已存入雲端「假單存檔／' + r.label.split(' ')[0] + '」' +
           (r.locked ? '\n🔒 已鎖定 ' + r.locked + ' 張的核章人' : '') + warn);
-        addLink('🖨️ 開啟 PDF 列印', r.pdfUrl, 'main');
-        if (r.wordUrl) addLink('📝 下載 Word 檔（可修改）', r.wordUrl);
+        dlBtn('🖨️ 下載 PDF 列印', r.pdfId, 'pdf', 'main');
+        dlBtn('📝 下載 Word 檔（可修改）', r.docId, 'docx');
+        addLink('☁️ 在雲端開啟 PDF', r.pdfUrl);
         addLink('✏️ 可編輯的 Google 文件', r.docUrl);
         addLink('📁 開啟月份資料夾', r.folderUrl);
         $('genResult').hidden = false;
@@ -1637,6 +1817,16 @@
       items.forEach(function (x) { ul.appendChild(el('li', { text: x })); });
     }
     function infoError(e) { if (e.message !== 'NEED_LOGIN') infoList(['❌ ' + e.message]); }
+    $('shareLeave').addEventListener('click', function () {
+      run('apiShareLeaveFolder', [token]).then(function (r) {
+        infoList([
+          '✅ 「假單存檔」資料夾已共用給名冊上啟用、有填 Gmail 的幹部（他們用那個 Gmail 登入 Google 就打得開 PDF）。',
+          r.added.length ? '新增：' + r.added.join('、') : '沒有需要新增的人',
+          r.removed.length ? '移除（已不是幹部）：' + r.removed.join('、') : '',
+          r.failed.length ? '⚠️ 共用失敗（請確認是 Google 帳號）：' + r.failed.join('、') : '',
+        ].filter(Boolean));
+      }).catch(infoError);
+    });
     $('checkLeave').addEventListener('click', function () { run('apiCheckLeaveSetup', [token]).then(infoList).catch(infoError); });
     $('listPh').addEventListener('click', function () {
       run('apiPlaceholders', [token]).then(function (list) { infoList(['把下面的文字放進公版假單（Google 文件）要填資料的位置：'].concat(list)); }).catch(infoError);
@@ -1656,7 +1846,7 @@
     var SETTING_GROUPS = [
       ['基本', '', ['網站名稱', '前台顯示行事曆']],
       ['請假表單', '連到請假 Google 表單的回應試算表。', ['表單回應試算表ID', '回應工作表名稱', '請假人員欄位', '月份判斷欄位', '預設請假類別', '其他請假類別', '代填檢查', '填表信箱欄位']],
-      ['假單列印', '公版假單範本和存檔位置。', ['假單範本文件ID', '存檔資料夾ID', '使用民國年', '另存Word檔', '另存個別PDF']],
+      ['假單列印', '公版假單範本和存檔位置。', ['假單範本文件ID', '存檔資料夾ID', '使用民國年', '假單共用給幹部', '另存Word檔', '另存個別PDF']],
       ['職務與核章', '誰排前面、誰幫誰核章。', ['職務順序', '簽章職務鏈', '最高職務請假時', '只找同小隊', '無人可代理時']],
     ];
     function settingInput(s, i) {
@@ -1690,6 +1880,28 @@
         box.appendChild(fold);
       }
     }
+    /* 設定軟鎖：要先按「解鎖修改」才能改（維護公告不受影響）；儲存後或離開設定頁自動鎖回去 */
+    var settingsOpen = false;
+    function setSettingsLock(open) {
+      settingsOpen = !!open;
+      var f = $('settingsForm');
+      f.disabled = !settingsOpen;
+      f.classList.toggle('locked', !settingsOpen);
+      $('setLockRow').classList.toggle('open', settingsOpen);
+      $('setLockText').textContent = settingsOpen
+        ? '🔓 已解鎖：改完按最下面的「儲存設定」，儲存後會自動鎖回去。'
+        : '🔒 已鎖定，避免誤觸。要修改請先按「解鎖修改」。';
+      $('setLockBtn').textContent = settingsOpen ? '🔒 不改了，鎖回去' : '🔓 解鎖修改';
+      $('saveSettings').hidden = !settingsOpen;
+    }
+    function relockSettings() {
+      if (!settingsOpen) return;
+      if (D) renderSettings(); // 沒儲存的修改還原
+      $('settingsMsg').textContent = '';
+      setSettingsLock(false);
+    }
+    $('setLockBtn').addEventListener('click', function () { if (settingsOpen) relockSettings(); else setSettingsLock(true); });
+    setSettingsLock(false);
     $('saveSettings').addEventListener('click', function () {
       var obj = {};
       Array.prototype.forEach.call($('settings').querySelectorAll('[data-key]'), function (i) {
@@ -1706,7 +1918,8 @@
           }
         });
         D.calendarOn = list.some(function (x) { return x.key === '前台顯示行事曆' && x.value === '是'; });
-        okTo($('settingsMsg'), '✅ 已儲存');
+        setSettingsLock(false);
+        okTo($('settingsMsg'), '✅ 已儲存，設定已鎖回去');
       }).catch(failTo($('settingsMsg')));
     });
 
@@ -1767,7 +1980,7 @@
     function requestTodo(r, after) {
       var when = r.time ? new Date(r.time) : null;
       var t = when ? (when.getMonth() + 1) + '/' + when.getDate() + ' ' + String(when.getHours()).padStart(2, '0') + ':' + String(when.getMinutes()).padStart(2, '0') : '';
-      return todo('🔑', (r.name || r.email) + ' 想登入後台', (r.name ? r.email + '・' : '名冊沒有這個 Gmail・') + t, grantControls(r, after), true);
+      return todo('🔑', (r.name || r.email) + ' 想登入後台', (r.name ? r.email + '・' : '名冊沒有這個信箱・') + t, grantControls(r, after), true);
     }
     function renderHome() {
       var d = new Date();
