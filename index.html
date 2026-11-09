@@ -584,7 +584,8 @@
             <div id="cancelList"></div>
           </details>
           <details class="tools">
-            <summary>假單工具（檢查設定、範本欄位）</summary>
+            <summary>假單工具（檢查設定、範本欄位、請假總表）</summary>
+            <div class="lockrow" id="autoSumRow"><div class="grow" id="autoSumText"></div><button class="btn" id="autoSumBtn">開啟自動更新</button></div>
             <div class="btnrow">
               <button class="btn" id="checkLeave">檢查設定</button>
               <button class="btn" id="listPh">列出範本可用欄位</button>
@@ -874,17 +875,24 @@
      *   window.PORTAL_API_URL = 'https://script.google.com/macros/s/xxxx/exec';
      * 沒有 config.js 時才用下面這行 */
     var API_URL = window.PORTAL_API_URL || 'PASTE_ADMIN_API_URL';
-    var APP_VERSION = '2.5.0';
-    var MIN_API_VERSION = '2.5.0';         // 這版網頁需要的 Apps Script 版本
+    var APP_VERSION = '2.6.0';
+    var MIN_API_VERSION = '2.6.0';         // 這版網頁需要的 Apps Script 版本
     /* ================================= */
 
     /* 更新紀錄：最新的放最上面。登入後第一次看到新版本會跳出（含上次看過之後的所有版本） */
     var CHANGELOG = [
+      { v: '2.6.0', date: '2026-11-09', items: [
+        '請假總表自動更新：有人送出請假表單，「請假總表（依年月排序）」就會自動加進去，不用再按',
+        '在 假單 → 假單工具 按一次「開啟自動更新」就好（第一次會請你授權）',
+        '換了表單回應試算表，自動更新會自動跟著換過去',
+        '更新：GitHub 後台 index.html＋Apps Script 前台（Code）與後台（Code），部署新版本',
+      ] },
       { v: '2.5.0', date: '2026-11-09', items: [
         '新增「請假總表（依年月排序）」試算表：同一年月放一起，再依類別、職務高低、填表時間排好；換月份會換底色',
         '總表放在「假單存檔」資料夾，幹部打開資料夾就看得到；不含信箱，表單回應原始資料不用共用、也不會被動到',
         '每次產生假單、消假、放行代填都會自動更新；假單工具也有「📊 更新請假總表」按鈕',
         '共用失敗時會顯示 Google 回的原因',
+        '「建立範例範本」改成先問一次，避免不小心把自己的範本換掉',
         '更新：GitHub 後台 index.html＋Apps Script 前台（Code）與後台（Code、Leave），部署新版本',
       ] },
       { v: '2.4.0', date: '2026-11-09', items: [
@@ -1228,6 +1236,7 @@
         fillSelect('mPosition', [''].concat(r.positions));
         renderTiles();
         renderMembers();
+        renderAutoSum();
         renderSettings();
         renderBadges();
         renderMaintForm();
@@ -1833,6 +1842,23 @@
       items.forEach(function (x) { ul.appendChild(el('li', { text: x })); });
     }
     function infoError(e) { if (e.message !== 'NEED_LOGIN') infoList(['❌ ' + e.message]); }
+    /* 請假總表自動更新（表單送出時） */
+    function renderAutoSum() {
+      var on = D ? D.autoSummary : false;
+      $('autoSumRow').classList.toggle('open', on === true);
+      $('autoSumText').textContent = on === true ? '✅ 自動更新已開啟：有人送出請假表單，請假總表就會自動加進去'
+        : on === null ? '⚠️ 自動更新需要授權：請照安裝說明「請假總表自動更新」重新部署並允許'
+        : '⚪ 請假總表目前只在按「更新請假總表」、產生假單、消假時更新';
+      $('autoSumBtn').textContent = on === true ? '關閉自動更新' : '開啟自動更新';
+    }
+    $('autoSumBtn').addEventListener('click', function () {
+      var want = !(D && D.autoSummary === true);
+      run('apiSetAutoSummary', [token, want]).then(function (r) {
+        D.autoSummary = r.on;
+        renderAutoSum();
+        toast(r.on ? '✅ 已開啟自動更新' + (r.count !== null ? '（總表共 ' + r.count + ' 筆）' : '') : '已關閉自動更新');
+      }).catch(infoError);
+    });
     $('summaryBtn').addEventListener('click', function () {
       run('apiUpdateLeaveSummary', [token]).then(function (r) {
         infoList(['✅ 請假總表已更新，共 ' + r.count + ' 筆（同一年月放一起，放在「假單存檔」資料夾，幹部看得到）。']);
@@ -1854,6 +1880,17 @@
       run('apiPlaceholders', [token]).then(function (list) { infoList(['把下面的文字放進公版假單（Google 文件）要填資料的位置：'].concat(list)); }).catch(infoError);
     });
     $('sampleTpl').addEventListener('click', function () {
+      var cur = ((D && D.settings || []).filter(function (x) { return x.key === '假單範本文件ID'; })[0] || {}).value;
+      (cur ? ask({
+        title: '換成範例範本？', ok: '換成範例範本', danger: true,
+        body: [el('div', { text: '目前已經有設定假單範本。建立範例範本會把「假單範本文件ID」換成新的範例，之後印出來的假單會變成範例的格式。' }),
+          el('div', { cls: 'note', text: '⚠️ 你自己的範本不會被刪掉，但要改回來得重新貼上它的網址。' })],
+      }) : Promise.resolve({})).then(function (a) {
+        if (!a) return;
+        createSample();
+      });
+    });
+    function createSample() {
       run('apiCreateSampleTemplate', [token]).then(function (r) {
         D.settings = r.settings;
         renderSettings();
@@ -1862,7 +1899,7 @@
         ul.appendChild(el('li', { text: '✅ 範例範本已建立並設為目前範本：' }));
         ul.appendChild(el('li', {}, [el('a', { href: r.url, target: '_blank', rel: 'noopener', text: '開啟範本' })]));
       }).catch(infoError);
-    });
+    }
 
     /* ---------- 設定 ---------- */
     var SETTING_GROUPS = [
